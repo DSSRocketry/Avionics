@@ -18,3 +18,12 @@ void loop() {
   nicla::leds.setColor(off);    //turn all LEDs off
   delay(1000);                  //wait 1 second
 }
+
+
+
+int main(void){
+
+
+
+  
+}
