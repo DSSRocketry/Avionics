@@ -1,19 +1,20 @@
 // Intialise library which communicates with RGB driver
 // Functions accessible under 'nicla' namespace
 #include "Nicla_System.h"
+using namespace std::chrono_literals;
 
+rtos::Thread blinkthread;
 
-void app_main(void* argument)
-// not sure why it wants a void pointer other than to fit
-// the type of a osThreadFunc_t
+void blink_app(void)
+
 {
   while(1) {
     Serial.println(String("log msg 2"));
     //run this code in a loop
-    nicla::leds.setColor(green);  //turn green LED on
-    osDelay(1000);                  //wait 1 second
-    nicla::leds.setColor(off);    //turn all LEDs off
-    osDelay(1000);                  //wait 1 second
+    nicla::leds.setColor(green);                       //turn green LED on
+    rtos::ThisThread::sleep_for(1s);                   //wait 1 second
+    nicla::leds.setColor(off);                         //turn all LEDs off
+    rtos::ThisThread::sleep_for(1s);                   //wait 1 second
   }
 }
 
@@ -27,12 +28,7 @@ int main(void)
   Serial.begin(115200);
   while(!Serial);
   Serial.println(String("log msg 1"));
-  SystemCoreClockUpdate();
-  osKernelInitialize();
-  osThreadNew(app_main, NULL, NULL);
-  if(osKernelGetState()==osKernelReady){
-    osKernelStart();   
-  }
+  blinkthread.start(blink_app);
   while(1);
   return 0;
 }
