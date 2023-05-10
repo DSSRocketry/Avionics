@@ -21,10 +21,10 @@ SensorQuaternion rotation(SENSOR_ID_RV);
 
 //declare the threads
 
-rtos::Thread blinkthread(osPriorityBelowNormal);//heartbeat blink is low importance
-rtos::Thread sensorupdatethread;
-rtos::Thread sensorprintthread;
-
+rtos::Thread blinkthread(osPriorityAboveNormal);//heartbeat blink is wanted
+rtos::Thread sensorupdatethread;//not actually used currently
+rtos::Thread sensorprintthread;//sensor updating will happily consume all time it seems
+//some testing remains with the thread priority. below normal seems to cause threads to not run
 
 /**function to run in a thread and blink the onboard led
  */
@@ -42,7 +42,6 @@ void blink_app(void)
  * You want to update it constantly
  */
 void sensorupdate_app(void){
-
   BHY2.update();
 
 }
@@ -65,10 +64,11 @@ void sensorprint_app(void)
     Serial.println(String("gas: ") + String(gas.value(),3));
     Serial.println(String("pressure: ") + String(pressure.value(),3));
     Serial.println(String("rotation: ") + rotation.toString());
+    Serial.println(millis());
   }
 }
 
-int main(void)
+void setup(void)
 {
   //run this code once when Nicla Sense ME board turns on
   nicla::begin();               // initialise library
@@ -87,7 +87,12 @@ int main(void)
 
   blinkthread.start(blink_app);
   //sensorupdatethread.start(sensorupdate_app);
-  sensorprintthread.start(sensorprint_app);  
-  while(1);
-  return 0;
+  sensorprintthread.start(sensorprint_app);
+  blinkthread.join(); //wait for blink to end (aka never return to main)
 }
+
+
+void loop(void){
+  
+}
+
