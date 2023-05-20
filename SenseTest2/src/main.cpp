@@ -31,6 +31,15 @@ void setup()
   pressure.begin();
 }
 
+
+double pressure_to_altitude(double pressure) 
+{
+    const double p0 = 1013.25; // pressure at sea level
+
+    return 44330 * (1 - pow(pressure/p0,1/5.255));
+}
+
+
 void loop()
 {
   static auto printTime = millis();
@@ -38,14 +47,19 @@ void loop()
   // Update function should be continuously polled
   BHY2.update();
 
-  if (millis() - printTime >= 1000) {
-    printTime = millis();
+  double altitude = pressure_to_altitude(pressure.value());
+  Serial.println(altitude);
 
-    Serial.println(String("acceleration: ") + accel.toString());
-    Serial.println(String("gyroscope: ") + gyro.toString());
-    Serial.println(String("temperature: ") + String(temp.value(),3));
-    Serial.println(String("gas: ") + String(gas.value(),3));
-    Serial.println(String("pressure: ") + String(pressure.value(),3));
-    Serial.println(String("rotation: ") + rotation.toString());
-  }
+
+  //if (millis() - printTime >= 1000) {
+    //printTime = millis();
+
+    //Serial.println(String("acceleration: ") + accel.toString());
+    //Serial.println(String("gyroscope: ") + gyro.toString());
+    //Serial.println(String("temperature: ") + String(temp.value(),3));
+    //Serial.println(String("gas: ") + String(gas.value(),3));
+    //Serial.println(String("pressure: ") + String(pressure.value(),3));
+    //Serial.println(String("rotation: ") + rotation.toString());
+  //}
+
 }
