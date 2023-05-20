@@ -10,7 +10,7 @@ int main(void) {
   nicla::leds.begin();          // Start I2C connection
   while(1) {
     //run this code in a loop
-    nicla::leds.setColor(green);  //turn green LED on
+    nicla::leds.setColor(cyan);  //turn green LED on
     delay(1000);                  //wait 1 second
     nicla::leds.setColor(off);    //turn all LEDs off
     delay(1000);                  //wait 1 second
