@@ -14,6 +14,7 @@ SensorXYZ gyro(SENSOR_ID_GYRO);
 Sensor temp(SENSOR_ID_TEMP);
 Sensor gas(SENSOR_ID_GAS);
 Sensor pressure(SENSOR_ID_BARO);
+Sensor activity(SENSOR_ID_STC_HW);
 SensorQuaternion rotation(SENSOR_ID_RV);
 
 void setup()
@@ -29,6 +30,8 @@ void setup()
   gas.begin();
   rotation.begin();
   pressure.begin();
+  activity.begin();
+
 }
 
 void loop()
@@ -47,5 +50,6 @@ void loop()
     Serial.println(String("gas: ") + String(gas.value(),3));
     Serial.println(String("pressure: ") + String(pressure.value(),3));
     Serial.println(String("rotation: ") + rotation.toString());
+    Serial.println(String("activity: ") + activity.toString());
   }
 }
