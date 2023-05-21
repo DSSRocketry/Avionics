@@ -121,8 +121,9 @@ void setup(void)
   char buffer[dataSize] {};  
 
 
-  //Note that, because how how big an area is being formatted, there are bytes at the being likely
-  //That are erased as part of the partioning. So we have to read from an address further down than 0
+  //Note that, because how how big an area is being formatted and the allocation table being made,
+  // there are bytes at the beginning that are erased as part of the partioning. Seems to be roughly 4 KB
+  // So we have to read from an address further down than just 0
 
 
   // Read back what was stored at previous execution  
@@ -139,8 +140,6 @@ void setup(void)
   Serial.println(newMessage);  
   blockDevice.program(newMessage.c_str(), 1024*8, dataSize);
   
-
-
   blockDevice.deinit();
   Serial.println("Done.");
   rtos::ThisThread::sleep_for(5s);                   //wait 5 seconds
