@@ -109,7 +109,9 @@ void setup(void)
   Serial.println("Readable block size: " + String((unsigned int) blockDevice.get_read_size())  + " bytes");
   Serial.println("Programmable block size: " + String((unsigned int) programBlockSize) + " bytes");
   Serial.println("Erasable block size: " + String((unsigned int) eraseBlockSize / 1024) + " KB");
-     
+
+ //Random number to demonstrate that the value read back and written will be unique and
+ //not just the same value read over and over with the new one failing to program
   String newMessage = "Random number: " + String(random(1024));
   
   // Calculate the amount of bytes needed to store the message
@@ -120,7 +122,7 @@ void setup(void)
   const auto dataSize = requiredBlocks * programBlockSize;  
   char buffer[dataSize] {};  
 
-
+  Serial.println("Data Size: " + String((unsigned int) dataSize) + " B");
   //Note that, because how how big an area is being formatted and the allocation table being made,
   // there are bytes at the beginning that are erased as part of the partioning. Seems to be roughly 4 KB
   // So we have to read from an address further down than just 0
