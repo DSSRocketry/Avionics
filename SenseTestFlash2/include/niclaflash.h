@@ -16,7 +16,7 @@ Currently only works for a single partition sized to the whole flash
 
 #define PARTITION_TYPE 0x0B // FAT 32
 #define DEVICE_SIZE 1024 * 1024 * 2 // 2 MB
-#define FLASH_START_ADDRESS 1024 * 8 // start 4 kB in to avoid the table
+#define FLASH_START_ADDRESS 1024 * 4 // start 4 kB in to avoid the table
 #define READ_MIN_SIZE 1 // 1 B
 #define PROG_MIN_SIZE 1 // 1 B
 #define ERASE_MIN_SIZE 1024 * 4 // 4 kB
@@ -43,6 +43,7 @@ public:
     u_int32_t set_writeaddress(const u_int32_t newaddress);
     u_int32_t get_readaddress(void);
     u_int32_t set_readaddress(const u_int32_t newaddress);
+    u_int32_t get_currentsector(void);
     mbed::MBRBlockDevice get_blockdevice(void);
 
 

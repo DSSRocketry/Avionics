@@ -50,12 +50,14 @@ void setup(void)
   NiclaFlash extflashmem;
   Serial.println(String(extflashmem.get_readaddress()));
   Serial.println(String(extflashmem.get_writeaddress()));
+  Serial.println(String(extflashmem.get_currentsector()));
   //extflashmem.flashtest();
   //extflashmem.get_blockdevice().erase(FLASH_START_ADDRESS, ERASE_MIN_SIZE*1);
   extflashmem.writestring(String("Hello "));
   extflashmem.readchunktoserial(uint32_t(7));
   extflashmem.writestring(String("World\n"));
-  extflashmem.readchunktoserial(uint32_t(6));
+  extflashmem.readchunktoserial(uint32_t(23));
+  Serial.println(String(extflashmem.get_currentsector()));
 
   Serial.println(String("log msg: flash hello world end"));
 

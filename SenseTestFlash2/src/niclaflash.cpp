@@ -53,18 +53,29 @@ u_int32_t NiclaFlash::set_readaddress(const u_int32_t newaddress)
   readaddress=newaddress;
   return oldaddress;
 }
+u_int32_t NiclaFlash::get_currentsector(void)
+{
+  return currentsector;
+}
+
+
+
+
+
 mbed::MBRBlockDevice NiclaFlash::get_blockdevice(void){
   return blockdevice;
 }
 
+
+
 /*
 This function attempts to determine if the message size will push into a new sector
-It erases the sector if so
+It erases the sector if so.
 */
 int NiclaFlash::preparesectorforwrite(const u_int32_t messagesize){
 
-  if(floor(float(writeaddress+messagesize))/float(ERASE_MIN_SIZE)>=currentsector){
-    currentsector=u_int32_t(floor(writeaddress+messagesize)/ERASE_MIN_SIZE);
+  if(floor(float(writeaddress+messagesize)/float(ERASE_MIN_SIZE))>=currentsector){
+    currentsector=u_int32_t(floor(float(writeaddress+messagesize)/float(ERASE_MIN_SIZE)));
     return blockdevice.erase(currentsector*ERASE_MIN_SIZE, 1*ERASE_MIN_SIZE);
   }
   return 0;
