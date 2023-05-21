@@ -11,7 +11,7 @@
 using namespace std::chrono_literals;
 
 
-//declare the sesors
+//declare the sensors
 SensorXYZ accel(SENSOR_ID_ACC);
 SensorXYZ gyro(SENSOR_ID_GYRO);
 Sensor temp(SENSOR_ID_TEMP);
@@ -56,7 +56,6 @@ void sensorprint_app(void)
 {
 
   while(1) {
-    rtos::ThisThread::sleep_for(1s);                   //wait 1 second
     BHY2.update();
     Serial.println(String("acceleration: ") + accel.toString());
     Serial.println(String("gyroscope: ") + gyro.toString());
@@ -65,6 +64,7 @@ void sensorprint_app(void)
     Serial.println(String("pressure: ") + String(pressure.value(),3));
     Serial.println(String("rotation: ") + rotation.toString());
     Serial.println(millis());
+    rtos::ThisThread::sleep_for(1s);                   //wait 1 second
   }
 }
 
