@@ -1,5 +1,1 @@
-Example for testing 2MB external flash on nicla sense
-
-Drawn largely from example here:
-https://docs.arduino.cc/tutorials/portenta-h7/reading-writing-flash-memory#programming-the-qspi-flash
-but adapted
+Example functions for using 2MB external flash on nicla sense
