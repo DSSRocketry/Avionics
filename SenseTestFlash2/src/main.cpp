@@ -48,16 +48,19 @@ void setup(void)
 
 
   NiclaFlash extflashmem;
-  Serial.println(String(extflashmem.get_readaddress()));
-  Serial.println(String(extflashmem.get_writeaddress()));
-  Serial.println(String(extflashmem.get_currentsector()));
+  Serial.println(String("Current Read Address: ")+String(extflashmem.get_readaddress()));
+  Serial.println(String("Current Write Address: ")+String(extflashmem.get_writeaddress()));
+  Serial.println(String("Current Sector: ")+String(extflashmem.get_currentsector()));
   //extflashmem.flashtest();
   //extflashmem.get_blockdevice().erase(FLASH_START_ADDRESS, ERASE_MIN_SIZE*1);
   extflashmem.writestring(String("Hello "));
-  extflashmem.readchunktoserial(uint32_t(7));
-  extflashmem.writestring(String("World\n"));
-  extflashmem.readchunktoserial(uint32_t(23));
-  Serial.println(String(extflashmem.get_currentsector()));
+  //extflashmem.readchunktoserial(uint32_t(5));
+  extflashmem.readstringtoserial();
+  extflashmem.writestring(String("World 123 123\n"));
+  //extflashmem.readchunktoserial(uint32_t(17));
+  extflashmem.readstringtoserial();
+  //extflashmem.readlinetoserial();
+  Serial.println(String("Current Sector: ")+String(extflashmem.get_currentsector()));
 
   Serial.println(String("log msg: flash hello world end"));
 

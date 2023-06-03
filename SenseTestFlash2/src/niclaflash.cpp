@@ -21,6 +21,7 @@ NiclaFlash::NiclaFlash():writeaddress{FLASH_START_ADDRESS},readaddress{FLASH_STA
   currentsector{0},extflash{},blockdevice{&extflash, 1}
 {
 //the default values in the constructor for extflash work
+//Uses the Serial Flash Discoverable Parameters feature
   extflash.init();
   // Allocate a partition
   mbed::MBRBlockDevice::partition(&extflash, 1, PARTITION_TYPE, 1024*4, DEVICE_SIZE);
@@ -84,13 +85,19 @@ int NiclaFlash::preparesectorforwrite(const u_int32_t messagesize){
 
 
 
-//Limited to max 4kB in 1 write
+/*Limited to max 4kB (4k char) in 1 write
+This is due to the prepare sector function currently only
+being able to handle one sector ahead
+*/
 int NiclaFlash::writestring(const String stringtowrite)
 {
-  //if only given a string, use the writeaddress of the object
+  //This function is a public wrapper to feed the writestring function
+  //the current write address from the flash object
   return writestring(stringtowrite, writeaddress);
 }
-
+/*
+This is the private function that performs the write string operation
+*/
 int NiclaFlash::writestring(const String stringtowrite, const u_int32_t address)
 {
   const auto messagesize = stringtowrite.length() + 1; //One extra byte for NULL termination of c string
@@ -104,7 +111,8 @@ int NiclaFlash::writestring(const String stringtowrite, const u_int32_t address)
 
 int NiclaFlash::readchunktoserial(const u_int32_t sizetoread)
 {
-  //if only given a string, use the readaddress of the object
+  //This function is a public wrapper to feed the readchunktoserial function
+  //the current read address from the flash object
   return readchunktoserial(sizetoread, readaddress);
 }
 
@@ -117,8 +125,88 @@ int NiclaFlash::readchunktoserial(const u_int32_t sizetoread, const u_int32_t ad
   return 0;
 }
 
+/*
+This read function will read in from the flash
+until a \0 character is hit and then print the buffer to the serial port.
+The \0 will be included in the output
+*/
+int NiclaFlash::readstringtoserial(void)
+{
+  char buffer[MAX_FLASH_READ_BUFFER_SIZE+1] {};
+  char holder[1] {};
+  uint16_t hitmaxflag=1;//set to 0 if max is not hit
+  //the final result will need to have a \0 appended
+  //to have it be a string if the max read is exceed.
+  // As such, need the buffer to be one larger
+  //in case the max read is reached
+  for(u_int32_t i=0; i<MAX_FLASH_READ_BUFFER_SIZE; i++)
+  {
+    blockdevice.read(holder, readaddress, 1);
+    buffer[i]=holder[0];
+    readaddress+=1;//increase the read address pointer
+    if(buffer[i]=='\0')
+    {
+      hitmaxflag=0;
+      break;
+    }
+  }
+
+  if(hitmaxflag==0)
+  {
+    Serial.print(buffer);
+  }
+  else
+  {
+    buffer[MAX_FLASH_READ_BUFFER_SIZE]='\0';
+    Serial.print(buffer);
+  }
+  return 0;
+}
 
 
+/*
+This read function will read in from the flash
+until a \n or \r character is hit and then print the buffer to the serial port
+The output will include the \n or \r
+*/
+int NiclaFlash::readlinetoserial(void)
+{
+  char buffer[MAX_FLASH_READ_BUFFER_SIZE+1] {};
+  char holder[1] {};
+  uint16_t hitmaxflag=1;//set to 0 if max is not hit
+  //the final result will need to have a \0 appended
+  //to have it be a string. As such, need the buffer to be one larger
+  //in case the max read is hit
+  for(u_int32_t i=0; i<MAX_FLASH_READ_BUFFER_SIZE; i++)
+  {
+    blockdevice.read(holder, readaddress, 1);
+    buffer[i]=holder[0];    
+    readaddress+=1;//increase the read address pointer
+
+    if((buffer[i]=='\n')|| (buffer[i]=='\r'))
+    {
+      hitmaxflag=0;
+      buffer[i+1]='\0';
+      break;
+    } else if(buffer[i]=='\0')//handle if multiple strings form one line
+    {
+      buffer[i]=' ';
+      //i-=1;
+    }
+  }
+
+  if(hitmaxflag==0)
+  {
+    //Serial.print("print buffer\n");
+    Serial.print(buffer);
+  }
+  else
+  {
+    buffer[MAX_FLASH_READ_BUFFER_SIZE]='\0';
+    Serial.print(buffer);
+  }
+  return 0;
+}
 
 
 
@@ -189,11 +277,14 @@ int NiclaFlash::flashtest(void){
   return 0;
 }
 
-
+/*
+Function to read the whole flash to the serial port.
+Starts from the intial read address
+Currently not implemented
+*/
 int NiclaFlash::readalltoserial(void)
 {
-
-
+  return 0;
 }
 
 

@@ -20,12 +20,15 @@ Currently only works for a single partition sized to the whole flash
 #define READ_MIN_SIZE 1 // 1 B
 #define PROG_MIN_SIZE 1 // 1 B
 #define ERASE_MIN_SIZE 1024 * 4 // 4 kB
+
+#define MAX_FLASH_READ_BUFFER_SIZE 1024 //number of bytes to make the flash read buffers
 /*
 Class to simplify basic use of the external flash on the 
 Nicla Sense
 */
 class NiclaFlash
 {
+//This class should be made into a singleton class
 private:
     u_int32_t writeaddress;
     u_int32_t readaddress;
@@ -49,6 +52,8 @@ public:
 
     int writestring(const String stringtowrite);
     int readchunktoserial(const u_int32_t sizetoread);
+    int readstringtoserial(void);
+    int readlinetoserial(void);
     int flashtest(void);
     int readalltoserial(void);
 
