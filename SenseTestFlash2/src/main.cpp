@@ -58,8 +58,8 @@ void setup(void)
   extflashmem.readstringtoserial();
   extflashmem.writestring(String("World 123 123\n"));
   //extflashmem.readchunktoserial(uint32_t(17));
-  extflashmem.readstringtoserial();
-  //extflashmem.readlinetoserial();
+  //extflashmem.readstringtoserial();
+  extflashmem.readlinetoserial();
   Serial.println(String("Current Sector: ")+String(extflashmem.get_currentsector()));
 
   Serial.println(String("log msg: flash hello world end"));
