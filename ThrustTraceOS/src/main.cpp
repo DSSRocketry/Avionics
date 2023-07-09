@@ -23,7 +23,8 @@
 //------------------------------------------------------
 // Globals (this probably should not exist)
 //------------------------------------------------------
-u_int64_t altitude = 0; // In mm
+unsigned long altitude = 0; // In mm
+unsigned long pressure2 = 0;
 bool parachuteDeploy = false; // false = parachute should deploy if it hasnt already
 
 //------------------------------------------------------
@@ -43,11 +44,11 @@ Sensor pressure(SENSOR_ID_BARO);
 SensorQuaternion rotation(SENSOR_ID_RV);
 
 // Declare the threads with priorities
-rtos::Thread SensorUpdate(osPriorityRealtime7);
-rtos::Thread CheckApogee(osPriorityRealtime6);   
+rtos::Thread SensorUpdate(osPriorityNormal);
+rtos::Thread CheckApogee(osPriorityNormal);
 //rtos::Thread LogSensorData(osPriorityRealtime);
-rtos::Thread SensorPrint(osPriorityLow);
-rtos::Thread Blink(osPriorityLow);
+rtos::Thread SensorPrint(osPriorityNormal);
+rtos::Thread Blink(osPriorityNormal);
 
 //------------------------------------------------------
 // Functions
@@ -71,8 +72,11 @@ u_int64_t calculateAltitude(double pressure) {
  *        Calculates altitude from pressure.
  ******************************************************************************/
 void updateSensorData(void) {
-  BHY2.update();
-  altitude = calculateAltitude(pressure.value()); // ±25 cm
+    while(true) {
+      BHY2.update();
+      pressure2 = pressure.value();
+      altitude = calculateAltitude(pressure.value()); // ±25 cm
+    }
 }
 
 /******************************************************************************
@@ -102,12 +106,13 @@ void checkApogee(void) {
  ******************************************************************************/
 void sensorPrint(void) {
   while(true) {
-    rtos::ThisThread::sleep_for(1s);                   //wait 500ms (Using chrono duration)
-    Serial.println(String("acceleration: ") + accel.toString());
-    Serial.println(String("gyroscope: ") + gyro.toString());
-    Serial.println(String("temperature: ") + String(temp.value(),3));
-    Serial.println(String("pressure: ") + String(pressure.value(),3));
-    Serial.println(String("rotation: ") + rotation.toString());
+    rtos::ThisThread::sleep_for(500ms);                   //wait 500ms (Using chrono duration)
+    //Serial.println(String("acceleration: ") + accel.toString());
+    //Serial.println(String("gyroscope: ") + gyro.toString());
+    //Serial.println(String("temperature: ") + String(temp.value(),3));
+    Serial.println(String("pressure: ") + String(pressure, 3));
+    Serial.println(String("altitude: ") + String(altitude, 3));
+    //Serial.println(String("rotation: ") + rotation.toString());
     Serial.println(millis());
   }
 }
