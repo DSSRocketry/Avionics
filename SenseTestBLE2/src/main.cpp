@@ -90,6 +90,9 @@ float pressure_to_altitude(float pressure)
 }
 
 
+
+
+
 void setup()
 {
   Serial.begin(115200);
@@ -134,13 +137,13 @@ void loop()
   if (millis() - printTime >= 1000) {
     printTime = millis();
 
-    Serial.println(String("Acceleration: ") + accel.toString());
-    Serial.println(String("Gyroscope: ") + gyro.toString());
+    //Serial.println(String("Acceleration: ") + accel.toString());
+    //Serial.println(String("Gyroscope: ") + gyro.toString());
     Serial.println(String("Temperature: ") + String(temp.value(),3));
-    Serial.println(String("Gas: ") + String(gas.value(),3));
+    //Serial.println(String("Gas: ") + String(gas.value(),3));
     Serial.println(String("Pressure: ") + String(pressure.value()*100,3));//Pressure is in hPa by default
     Serial.println(String("Altitude: ") + String(altitudevalue,3));
-    Serial.println(String("Rotation: ") + rotation.toString());
+    //Serial.println(String("Rotation: ") + rotation.toString());
     //Serial.println(String("activity: ") + activity.toString());
     altitudevalue=pressure_to_altitude(pressure.value());
     temp_characteristic.writeValue(float_to_int16(temp.value()));
