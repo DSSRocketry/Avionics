@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "ESP32C3TestRecieverLORA",
+			"path": "ESP32C3TestRecieverLORA"
+		},
+		{
+			"name": "ESP32C3TestTransmitterLORA",
+			"path": "ESP32C3TestTransmitterLORA"
+		}
+	],
+	"settings": {}
+}
