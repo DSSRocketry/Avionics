@@ -48,9 +48,9 @@ Sensor pressure(SENSOR_ID_BARO);
 SensorQuaternion rotation(SENSOR_ID_RV);
 
 BLEService sensing_service(sensing_service_uuid);
-BLEShortCharacteristic temp_characteristic(temp_characteristic_uuid, BLERead | BLEIndicate);
-BLEUnsignedIntCharacteristic pressure_characteristic(pressure_characteristic_uuid, BLERead | BLEIndicate);
-BLEUnsignedIntCharacteristic altitude_characteristic(altitude_characteristic_uuid, BLERead | BLEIndicate);
+BLEShortCharacteristic temp_characteristic(temp_characteristic_uuid, BLERead | BLENotify);
+BLEUnsignedIntCharacteristic pressure_characteristic(pressure_characteristic_uuid, BLERead | BLENotify);
+BLEUnsignedIntCharacteristic altitude_characteristic(altitude_characteristic_uuid, BLERead | BLENotify);
 
 
 
