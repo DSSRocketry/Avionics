@@ -1,5 +1,6 @@
 {
     "files.associations": {
+        "chrono": "cpp",
         "mstd_iterator": "cpp",
         "array": "cpp",
         "*.tcc": "cpp",
@@ -13,6 +14,7 @@
         "string_view": "cpp",
         "memory": "cpp",
         "random": "cpp",
-        "initializer_list": "cpp"
+        "initializer_list": "cpp",
+        "thread": "cpp"
     }
 }
