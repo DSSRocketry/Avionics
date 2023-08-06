@@ -73,8 +73,6 @@ int16_t float_to_int16(float input)
   {
     return (int16_t) round(input);
   }
-
-
 }
 
 
