@@ -2,7 +2,7 @@
 // OS for a nickla sense board which will go onto a future DSS rocket
 
 // Notes:
-// 1. One cpp file for simplicity. 
+// 1. One cpp file for simplicity.
 // 2. UNTESTED!!! Nothing here has been tested at all.
 
 
