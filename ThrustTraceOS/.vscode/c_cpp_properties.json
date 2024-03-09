@@ -109,7 +109,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60109",
+                "PLATFORMIO=60111",
                 "ARDUINO_NICLA",
                 "ARDUINO_ARCH_NRF52832",
                 "ARM_MATH_CM4",
@@ -204,8 +204,8 @@
                 "-mfloat-abi=softfp",
                 "-mfpu=fpv4-sp-d16",
                 "-mthumb",
-                "-iprefixC:Usersoestu.platformiopackagesframework-arduino-mbed@3.5.4coresarduino",
-                "@C:Usersoestu.platformiopackagesframework-arduino-mbed@3.5.4variantsNICLAincludes.txt",
+                "-iprefixC:/Users/oestu/.platformio/packages/framework-arduino-mbed@3.5.4/cores/arduino",
+                "@C:/Users/oestu/.platformio/packages/framework-arduino-mbed@3.5.4/variants/NICLA/includes.txt",
                 ""
             ]
         }

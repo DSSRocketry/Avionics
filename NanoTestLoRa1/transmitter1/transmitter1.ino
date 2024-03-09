@@ -6,7 +6,6 @@ int pot = A0;
  
 void setup()
 {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   lora.begin(115200);
   pinMode(pot, INPUT);
